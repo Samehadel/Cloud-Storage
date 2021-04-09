@@ -1,4 +1,4 @@
-package com.flashcloud.root.services;
+package com.flashcloud.root.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
@@ -45,5 +46,15 @@ public class EncryptionService {
         }
 
         return new String(decryptedValue);
+    }
+
+    public String generateSalt(){
+        byte [] salt = new byte[16]; // Encryption Key
+        SecureRandom rand = new SecureRandom();
+
+        rand.nextBytes(salt); //Randomly Generate Byte Numbers
+        String encodedSalt = Base64.getEncoder().encodeToString(salt);
+
+        return encodedSalt;
     }
 }
