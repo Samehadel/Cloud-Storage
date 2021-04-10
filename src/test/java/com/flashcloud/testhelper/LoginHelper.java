@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginHelper {
+
     @FindBy(id = "inputUsername")
     private WebElement username;
 

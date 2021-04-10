@@ -25,7 +25,7 @@ public class NoteServiceImp implements NoteService {
     @Override
     public int addNote(Note note) {
 
-        int userId = getUserId(); //Get Current User's ID
+        int userId = getUserId(); //Get Logged User's ID
         note.setUserId(userId);
 
         //Edit Note If It's Exist
@@ -62,6 +62,7 @@ public class NoteServiceImp implements NoteService {
 
         return note == null ? false : true;
     }
+
     private int getUserId(){
         //Retrieve Username From ContextHolder
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

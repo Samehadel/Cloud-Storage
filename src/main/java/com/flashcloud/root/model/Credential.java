@@ -1,6 +1,6 @@
 package com.flashcloud.root.model;
 
-public class Credentials {
+public class Credential {
 
     private int credentialId;
     private String url;
