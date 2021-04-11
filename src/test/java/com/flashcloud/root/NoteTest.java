@@ -1,6 +1,5 @@
 package com.flashcloud.root;
 
-import com.flashcloud.testhelper.LoginHelper;
 import com.flashcloud.testhelper.NoteHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
@@ -16,7 +15,7 @@ public class NoteTest {
     private int port;
 
     private WebDriver driver;
-    private NoteHelper noteHelper;
+    private NoteHelper helper;
 
     @BeforeAll
     public static void setup(){
@@ -26,17 +25,17 @@ public class NoteTest {
     @BeforeEach
     public void init(){
         driver = new ChromeDriver();
-        noteHelper = new NoteHelper(driver);
+        helper = new NoteHelper(driver);
     }
     @Test
     public void testAddNote(){
 
         driver.get("http://localhost:" + this.port + "/login");
-        noteHelper.login(); //Login First
+        helper.login(); //Login First
 
-        int prevRows = noteHelper.getNumberOfNotes();
-        noteHelper.addNote();
-        int newRows = noteHelper.getNumberOfNotes();
+        int prevRows = helper.getNumberOfNotes();
+        helper.addNote();
+        int newRows = helper.getNumberOfNotes();
 
         Assertions.assertEquals(prevRows + 1, newRows);
     }
@@ -44,15 +43,15 @@ public class NoteTest {
     @Test
     public void testEditNote(){
         driver.get("http://localhost:" + this.port + "/login");
-        noteHelper.login(); //Login First
+        helper.login(); //Login First
 
         String newTitle = "Test New Title";
         String newDesc = "Test New Description";
 
-        noteHelper.editFirstNote(newTitle, newDesc);
+        helper.editFirstNote(newTitle, newDesc);
 
-        String updatedTitle = noteHelper.getFirstNoteTitle();
-        String updatedDesc = noteHelper.getFirstNoteDesc();
+        String updatedTitle = helper.getFirstNoteTitle();
+        String updatedDesc = helper.getFirstNoteDesc();
 
         Assertions.assertEquals(newTitle, updatedTitle);
         Assertions.assertEquals(newDesc, updatedDesc);
@@ -61,11 +60,11 @@ public class NoteTest {
     @Test
     public void testDelete(){
         driver.get("http://localhost:" + this.port + "/login");
-        noteHelper.login(); //Login First
+        helper.login(); //Login First
 
-        int prevRows = noteHelper.getNumberOfNotes();
-        noteHelper.deleteFirstNote();
-        int newRows = noteHelper.getNumberOfNotes();
+        int prevRows = helper.getNumberOfNotes();
+        helper.deleteFirstNote();
+        int newRows = helper.getNumberOfNotes();
 
         Assertions.assertEquals(prevRows - 1, newRows);
     }

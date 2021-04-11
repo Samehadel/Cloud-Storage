@@ -1,6 +1,5 @@
 package com.flashcloud.root;
 
-import com.flashcloud.root.model.User;
 import com.flashcloud.testhelper.LoginHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
@@ -19,7 +18,7 @@ class LoginTest {
 
 	private WebDriver driver;
 
-	private LoginHelper loginHelper;
+	private LoginHelper helper;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -29,7 +28,7 @@ class LoginTest {
 	@BeforeEach
 	public void beforeEach() {
 		this.driver = new ChromeDriver();
-		loginHelper = new LoginHelper(driver);
+		helper = new LoginHelper(driver);
 	}
 
 
@@ -47,7 +46,7 @@ class LoginTest {
 	@Test
 	public void testLogin(){
 		driver.get("http://localhost:" + this.port + "/login");
-		loginHelper.loginUser();
+		helper.loginUser();
 
 		assertEquals("Home", driver.getTitle());
 	}

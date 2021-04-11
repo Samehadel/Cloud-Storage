@@ -15,7 +15,7 @@ public class FileTest {
     private int port;
 
     private WebDriver driver;
-    private FileHelper fileHelper;
+    private FileHelper helper;
 
     @BeforeAll
     public static void setup() {
@@ -25,21 +25,21 @@ public class FileTest {
     @BeforeEach
     public void init() {
         driver = new ChromeDriver();
-        fileHelper = new FileHelper(driver);
+        helper = new FileHelper(driver);
     }
 
     @Test
     public void testUpload() {
         driver.get("http://localhost:" + this.port + "/login");
 
-        fileHelper.login(); //Login First
+        helper.login(); //Login First
 
-        int preRows = fileHelper.numberOfUploadedFiles(); //Count Number of Rows
+        int preRows = helper.numberOfUploadedFiles(); //Count Number of Rows
 
-        fileHelper.uploadFile("C:\\Users\\ALKODS\\Desktop\\Test.txt"); //Upload A File
+        helper.uploadFile("C:\\Users\\ALKODS\\Desktop\\Test.txt"); //Upload A File
 
         //Count Number of Rows Again
-        int newRows = fileHelper.numberOfUploadedFiles();
+        int newRows = helper.numberOfUploadedFiles();
 
         Assertions.assertEquals(preRows + 1, newRows);
     }
@@ -48,13 +48,13 @@ public class FileTest {
     public void testDelete(){
         driver.get("http://localhost:" + this.port + "/login");
 
-        fileHelper.login(); //Login First
+        helper.login(); //Login First
 
-        int preRows = fileHelper.numberOfUploadedFiles(); //Count Number of Rows
+        int preRows = helper.numberOfUploadedFiles(); //Count Number of Rows
 
-        fileHelper.deleteFirstFile();
+        helper.deleteFirstFile();
 
-        int newRows = fileHelper.numberOfUploadedFiles(); //Count Number of Rows Again
+        int newRows = helper.numberOfUploadedFiles(); //Count Number of Rows Again
 
         Assertions.assertEquals(preRows - 1, newRows);
     }

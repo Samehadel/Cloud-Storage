@@ -1,7 +1,6 @@
 package com.flashcloud.root;
 
 import com.flashcloud.testhelper.CredentialHelper;
-import com.flashcloud.testhelper.NoteHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +15,7 @@ public class CredentialTest {
     private int port;
 
     private WebDriver driver;
-    private CredentialHelper credHelper;
+    private CredentialHelper helper;
 
     @BeforeAll
     public static void setup(){
@@ -26,18 +25,20 @@ public class CredentialTest {
     @BeforeEach
     public void init(){
         driver = new ChromeDriver();
-        credHelper = new CredentialHelper(driver);
+        helper = new CredentialHelper(driver);
     }
 
     @Test
     public void addCredential(){
 
         driver.get("http://localhost:" + this.port + "/login");
-        credHelper.login(); //Login First
+        helper.login(); //Login First
 
-        int prevRows = credHelper.getNumberOfCredentials();
-        credHelper.addCredential();
-        int newRows = credHelper.getNumberOfCredentials();
+        int prevRows = helper.getNumberOfCredentials();
+
+        helper.addCredential();
+
+        int newRows = helper.getNumberOfCredentials();
 
         Assertions.assertEquals(prevRows + 1, newRows);
     }
@@ -45,17 +46,17 @@ public class CredentialTest {
     @Test
     public void testEditCred(){
         driver.get("http://localhost:" + this.port + "/login");
-        credHelper.login(); //Login First
+        helper.login(); //Login First
 
         String newUrl = "localhost:8082/Test";
         String newUsername = "admin@test.com";
         String newPassword = "admin0123";
 
-        credHelper.editFirstCred(newUrl, newUsername, newPassword);
+        helper.editFirstCred(newUrl, newUsername, newPassword);
 
-        String updatedUrl = credHelper.getFirstCreUrl();
-        String updatedUsername = credHelper.getFirstCredUsername();
-        String updatedPassword = credHelper.getFirstCrePassword();
+        String updatedUrl = helper.getFirstCreUrl();
+        String updatedUsername = helper.getFirstCredUsername();
+        String updatedPassword = helper.getFirstCrePassword();
 
         Assertions.assertEquals(newUrl, updatedUrl);
         Assertions.assertEquals(newUsername, updatedUsername);
@@ -65,11 +66,11 @@ public class CredentialTest {
     @Test
     public void testDelete(){
         driver.get("http://localhost:" + this.port + "/login");
-        credHelper.login(); //Login First
+        helper.login(); //Login First
 
-        int prevRows = credHelper.getNumberOfCredentials();
-        credHelper.deleteFirstCred();
-        int newRows = credHelper.getNumberOfCredentials();
+        int prevRows = helper.getNumberOfCredentials();
+        helper.deleteFirstCred();
+        int newRows = helper.getNumberOfCredentials();
 
         Assertions.assertEquals(prevRows - 1, newRows);
     }
