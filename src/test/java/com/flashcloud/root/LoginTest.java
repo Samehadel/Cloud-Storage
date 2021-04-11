@@ -47,8 +47,7 @@ class LoginTest {
 	@Test
 	public void testLogin(){
 		driver.get("http://localhost:" + this.port + "/login");
-		User signingUser = new User("admin@storage.com", "admin1234");
-		loginHelper.loginUser(signingUser);
+		loginHelper.loginUser();
 
 		assertEquals("Home", driver.getTitle());
 	}

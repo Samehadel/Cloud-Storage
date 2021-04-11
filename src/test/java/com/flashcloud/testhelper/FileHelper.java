@@ -22,10 +22,9 @@ public class FileHelper {
     private WebElement submit;
 
     private WebDriver driver;
-    private LoginHelper loginHelper;
+
 
     public FileHelper(WebDriver driver) {
-        loginHelper = new LoginHelper(driver);
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }

@@ -18,11 +18,14 @@ public class LoginHelper {
     @FindBy(id = "inputSubmit")
     private WebElement submit;
 
+    private User user;
+
     public LoginHelper(WebDriver driver) {
         PageFactory.initElements(driver, this);
+        user = new User("admin@storage.com", "admin1234");
     }
 
-    public void loginUser(User user){
+    public void loginUser(){
         username.sendKeys(user.getUsername());
         password.sendKeys(user.getPassword());
 
