@@ -48,4 +48,9 @@ public class SignupHelper {
         return userService.getUser(username);
     }
 
+    public void login(User user) {
+        username.sendKeys(user.getUsername());
+        password.sendKeys(user.getPassword());
+        submit.click();
+    }
 }

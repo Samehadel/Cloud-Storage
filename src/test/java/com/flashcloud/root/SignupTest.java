@@ -26,12 +26,12 @@ public class SignupTest {
 
     private static WebDriver driver;
 
-    private static User signedUser;
+    private static User user;
 
     @BeforeAll
     public static void init(){
         WebDriverManager.chromedriver().setup();
-        signedUser = new User("Sameh", "Adel", "mail2@exmaple.com", "sameh1234");
+        user = new User("Sameh", "Adel", "mail30@exmaple.com", "sameh1234");
     }
 
     @BeforeEach
@@ -50,23 +50,26 @@ public class SignupTest {
     public void testSignup(){
         driver.get("http://localhost:" + port + "/signup");
 
-        helper.signup(signedUser);
+        helper.signup(user);
+        String location = driver.getTitle();
+        assertEquals("Login", location);
 
-        User registeredUser = helper.getUser(signedUser.getUsername());
-
-        assertEquals(signedUser.getUsername(), registeredUser.getUsername());
+        helper.login(user);
+        location = driver.getTitle();
+        Assertions.assertEquals("Home", location);
     }
 
     @Test
     public void testUserId(){
-        User registeredUser = helper.getUser(signedUser.getUsername());
+        User registeredUser = helper.getUser(user.getUsername());
         assertNotEquals(0, registeredUser.getUserId());
     }
 
+    /*
     @AfterEach
     public void afterEach() {
         if (this.driver != null) {
             driver.quit();
         }
-    }
+    }*/
 }
