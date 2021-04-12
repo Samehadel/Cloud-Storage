@@ -2,6 +2,7 @@ package com.flashcloud.root.controller;
 
 import com.flashcloud.root.model.User;
 import com.flashcloud.root.services.UserService;
+import com.flashcloud.root.utils.UserInputsChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,18 +26,21 @@ public class SignupController {
     @PostMapping
     public String submit(@ModelAttribute User user, Model model){
 
-        String userMessage = "";
-
-        if(userService.getUser(user.getUsername()) != null){
-            userMessage = "Username already exist";
-        }else{
-            userService.createUser(user);
-            userMessage = "Account created successfully, please login";
+        //Check Inputs Sizes
+        if(!UserInputsChecker.checkSignUp(user)){
+            model.addAttribute("signupMessage", "Invalid Credentials");
+            return "signup";
         }
 
-        model.addAttribute("userMessage", userMessage);
-
-        return "signup";
+        //Check If User Exists
+        if(userService.getUser(user.getUsername()) != null){
+            model.addAttribute("signupMessage", "Username already exist");
+            return "signup";
+        }else{
+            userService.createUser(user);
+            model.addAttribute("userMessage", "Account created successfully, please login");
+            return "login";
+        }
     }
 
 }

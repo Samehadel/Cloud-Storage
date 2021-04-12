@@ -19,6 +19,9 @@ public interface NoteMapper {
     @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
     public List<Note> findAll(int userId);
 
+    @Select("SELECT * FROM NOTES WHERE notetitle = #{noteTitle} AND notedescription = #{noteDescription}")
+    public Note findByBody(Note note);
+
     @Delete("DELETE FROM NOTES WHERE noteid = #{noteId}")
     public boolean deleteById(int noteId);
 

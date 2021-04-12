@@ -6,8 +6,6 @@ import com.flashcloud.root.model.User;
 import com.flashcloud.root.services.NoteService;
 import com.flashcloud.root.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +20,20 @@ public class NoteServiceImp implements NoteService {
     @Autowired
     private UserService userService;
 
+
     @Override
     public int addNote(Note note) {
 
         int userId = getUserId(); //Get Logged User's ID
         note.setUserId(userId);
 
+        if(isNoteBodyExist(note)) return  -1;
+
         //Edit Note If It's Exist
         if(isNoteExist(note.getNoteId()))
         {
             editNote(note);
-            return note.getNoteId();
+            return -2;
         }
 
         return noteMapper.insert(note);
@@ -72,5 +73,12 @@ public class NoteServiceImp implements NoteService {
 
         return user.getUserId();
     }
+
+    private boolean isNoteBodyExist(Note note){
+        if(note != null)
+            return noteMapper.findByBody(note) != null;
+        return false;
+    }
+
 
 }

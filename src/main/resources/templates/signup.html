@@ -16,8 +16,8 @@
 
             <h1 class="display-5">Sign Up</h1>
             <form action="#" method="POST" th:action="@{/signup}" th:object="${user}">
-                <div class="alert alert-dark">
-                    <label th:text = "${userMessage}"/>
+                <div th:if = "${signupMessage} != null" class="alert alert-warning" th:text = "${signupMessage}">
+
                 </div>
 
                 <div class="form-row">
@@ -39,7 +39,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="inputPassword">Password</label>
-                        <input th:field="*{password}" type="password" name="password" class="form-control" id="inputPassword" placeholder="Enter Password" maxlength="20" required>
+                        <input th:field="*{password}" type="password" name="password" class="form-control" id="inputPassword" placeholder="Enter Password" maxlength="25" required>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" id = "inputSubmit">Sign Up</button>

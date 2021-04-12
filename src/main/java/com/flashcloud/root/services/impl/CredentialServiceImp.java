@@ -45,7 +45,7 @@ public class CredentialServiceImp implements CredentialService {
             }
             editCredential(credential);
 
-            return credential.getCredentialId();
+            return -2;
         }
 
         //First Time Creation

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,16 +36,27 @@ public class HomeFileController {
 
     @PostMapping("/upload")
     public String upload(@RequestParam("fileUpload") MultipartFile fileUpload,
+                         RedirectAttributes redirectAttributes,
                          @ModelAttribute Note note,
                          @ModelAttribute Credential credential,
                          Model model) throws IOException {
 
         int check = fileService.addFile(fileUpload);
 
-        if(check == 0)
-            model.addAttribute("uploadMessage", "File Already Exist");
-        else
-            model.addAttribute("uploadMessage", "File Uploaded Successfully");
+        if (check == -1) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("hasSuccess", false);
+            model.addAttribute("homeMessage", "Please select a file to be uploaded");
+        } else if (check == 0) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("hasSuccess", false);
+            model.addAttribute("homeMessage", "File Already Exist");
+        } else{
+            model.addAttribute("hasError", false);
+            model.addAttribute("hasSuccess", true);
+            model.addAttribute("homeMessage", "You Uploaded Successfully " + fileUpload.getOriginalFilename());
+        }
+
 
         //Prepare All Notes & Credentials & Files For Current Logged User
         List<Note> userNotes = noteService.getAllNotes();
@@ -59,7 +71,7 @@ public class HomeFileController {
     }
 
     @GetMapping("/download/{fileId}")
-    public ResponseEntity downloadFile(@PathVariable int fileId){
+    public ResponseEntity downloadFile(@PathVariable int fileId) {
         try {
             File file = fileService.getFileById(fileId);
 
@@ -67,7 +79,7 @@ public class HomeFileController {
                     .contentType(MediaType.parseMediaType(file.getContentType()))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + file.getFileName() + "\"")
                     .body(file.getFileData());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -77,7 +89,7 @@ public class HomeFileController {
     public String deleteFile(@PathVariable int fileId,
                              @ModelAttribute Note note,
                              @ModelAttribute Credential credential,
-                             Model model){
+                             Model model) {
 
         fileService.deleteFile(fileId);
 
@@ -89,7 +101,11 @@ public class HomeFileController {
         model.addAttribute("notes", userNotes);
         model.addAttribute("credentials", userCredentials);
         model.addAttribute("files", userFiles);
+        model.addAttribute("hasError", false);
+        model.addAttribute("hasSuccess", true);
+        model.addAttribute("homeMessage", "File Deleted Successfully");
 
         return "home";
     }
+
 }

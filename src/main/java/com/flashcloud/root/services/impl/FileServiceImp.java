@@ -28,6 +28,9 @@ public class FileServiceImp implements FileService {
         File file = new File();
         int userId = getUserId();
 
+        String o = fileUpload.getOriginalFilename();
+        if(fileUpload.getOriginalFilename().equals("")) return -1;
+
         String fileName = StringUtils.cleanPath(fileUpload.getOriginalFilename());
 
         //Set File Attributes

@@ -33,8 +33,17 @@ public class HomeCredentialController {
                           Model model){
 
         //Add The Credential
-        credentialService.addCredential(credential);
+        int check = credentialService.addCredential(credential);
 
+        if(check == -2){
+            model.addAttribute("hasError", false);
+            model.addAttribute("hasSuccess", true);
+            model.addAttribute("homeMessage", "Credential Updated Successfully");
+        }else{
+            model.addAttribute("hasError", false);
+            model.addAttribute("hasSuccess", true);
+            model.addAttribute("homeMessage", "Credential Created Successfully");
+        }
         //Prepare All Notes & Credentials & Files For Current Logged User
         List<Note> userNotes = noteService.getAllNotes();
         List<Credential> userCredentials = credentialService.getAllCredentials();
@@ -43,6 +52,8 @@ public class HomeCredentialController {
         model.addAttribute("notes", userNotes);
         model.addAttribute("credentials", userCredentials);
         model.addAttribute("files", userFiles);
+
+
 
         return "home";
     }
@@ -64,6 +75,9 @@ public class HomeCredentialController {
         model.addAttribute("notes", userNotes);
         model.addAttribute("credentials", userCredentials);
         model.addAttribute("files", userFiles);
+        model.addAttribute("hasError", false);
+        model.addAttribute("hasSuccess", true);
+        model.addAttribute("homeMessage", "Credential Deleted Successfully");
 
         return "home";
     }
