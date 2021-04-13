@@ -31,7 +31,7 @@ public class SignupTest {
     @BeforeAll
     public static void setup(){
         WebDriverManager.chromedriver().setup();
-        user = new User("Admin", "Admin", "admin1100@storage.com", "admin1234");
+        user = new User("Admin", "Admin", "admin1200@storage.com", "admin1234");
     }
 
     @BeforeEach
