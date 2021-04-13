@@ -36,12 +36,8 @@ public class CredentialTest {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
-        Thread.sleep(1000);//Wait
         int prevRows = helper.getNumberOfCredentials();
-
         helper.addCredential();
-
-        Thread.sleep(1000);//Wait
         int newRows = helper.getNumberOfCredentials();
 
         Assertions.assertEquals(prevRows + 1, newRows);
@@ -53,7 +49,6 @@ public class CredentialTest {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
-        Thread.sleep(1000);//Wait
 
         String newUrl = "localhost:8082/Test";
         String newUsername = "admin@test.com";
@@ -61,7 +56,6 @@ public class CredentialTest {
 
         helper.editFirstCred(newUrl, newUsername, newPassword);
 
-        Thread.sleep(1000); //Wait
         String updatedUrl = helper.getFirstCreUrl();
         String updatedUsername = helper.getFirstCredUsername();
         String updatedPassword = helper.getFirstCrePassword();
@@ -77,12 +71,10 @@ public class CredentialTest {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
-        Thread.sleep(1000);
         int prevRows = helper.getNumberOfCredentials();
 
         helper.deleteFirstCred();
 
-        Thread.sleep(1);
         int newRows = helper.getNumberOfCredentials();
 
         Assertions.assertEquals(prevRows - 1, newRows);

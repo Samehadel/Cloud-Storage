@@ -48,7 +48,7 @@ class LoginTest {
 		driver.get("http://localhost:" + this.port + "/login");
 		helper.loginUser();
 
-		Thread.sleep(1000);//Wait
+		//Thread.sleep(1000);//Wait
 
 		assertEquals("Home", driver.getTitle());
 	}

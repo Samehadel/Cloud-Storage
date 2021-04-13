@@ -36,12 +36,10 @@ public class NoteTest {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
-        Thread.sleep(1000);
         int prevRows = helper.getNumberOfNotes();
 
         helper.addNote();
 
-        Thread.sleep(1000);
         int newRows = helper.getNumberOfNotes();
 
         Assertions.assertEquals(prevRows + 1, newRows);
@@ -56,10 +54,8 @@ public class NoteTest {
         String newTitle = "Edit Test New Title";
         String newDesc = "Edit Test New Description";
 
-        Thread.sleep(1000);
         helper.editFirstNote(newTitle, newDesc);
 
-        Thread.sleep(1000);
         String updatedTitle = helper.getFirstNoteTitle();
         String updatedDesc = helper.getFirstNoteDesc();
 
@@ -73,12 +69,8 @@ public class NoteTest {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
-        Thread.sleep(1000);
         int prevRows = helper.getNumberOfNotes();
-
         helper.deleteFirstNote();
-
-        Thread.sleep(1000);
         int newRows = helper.getNumberOfNotes();
 
         Assertions.assertEquals(prevRows - 1, newRows);

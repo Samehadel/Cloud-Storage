@@ -31,7 +31,7 @@ public class SignupTest {
     @BeforeAll
     public static void setup(){
         WebDriverManager.chromedriver().setup();
-        user = new User("Admin", "Admin", "admin10@storage.com", "admin1234");
+        user = new User("Admin", "Admin", "admin1100@storage.com", "admin1234");
     }
 
     @BeforeEach
@@ -58,24 +58,14 @@ public class SignupTest {
         driver.get("http://localhost:" + port + "/signup");
 
         helper.signup(user);
-        Thread.sleep(1000); //Wait
         assertEquals("Login", driver.getTitle());
 
         helper.login(user);
-        Thread.sleep(1500); //Wait
         Assertions.assertEquals("Home", driver.getTitle());
 
         helper.logout();
-        Thread.sleep(1000);
         Assertions.assertEquals("Login", driver.getTitle());
     }
-
-    @Test
-    public void testUserId(){
-        User registeredUser = helper.getUser(user.getUsername());
-        assertNotEquals(0, registeredUser.getUserId());
-    }
-
 
     @AfterEach
     public void afterEach() {

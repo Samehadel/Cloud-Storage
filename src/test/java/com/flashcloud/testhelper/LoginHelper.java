@@ -1,7 +1,7 @@
 package com.flashcloud.testhelper;
 
 import com.flashcloud.root.model.User;
-import com.flashcloud.root.services.UserService;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,25 +10,27 @@ import org.openqa.selenium.support.PageFactory;
 public class LoginHelper {
 
     @FindBy(id = "inputUsername")
-    private WebElement username;
+    private WebElement inputUsername;
 
     @FindBy(id = "inputPassword")
-    private WebElement password;
+    private WebElement inputPassword;
 
     @FindBy(id = "inputSubmit")
-    private WebElement submit;
+    private WebElement inputSubmit;
 
     private User user;
+    private final WebDriver driver;
 
     public LoginHelper(WebDriver driver) {
         PageFactory.initElements(driver, this);
         user = new User("admin@storage.com", "admin1234");
+        this.driver = driver;
     }
 
     public void loginUser(){
-        username.sendKeys(user.getUsername());
-        password.sendKeys(user.getPassword());
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getUsername() + "';", inputUsername);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getPassword() + "';", inputPassword);
 
-        submit.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", inputSubmit);
     }
 }

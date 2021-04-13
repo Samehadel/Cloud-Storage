@@ -2,6 +2,7 @@ package com.flashcloud.testhelper;
 
 import com.flashcloud.root.model.User;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,16 +12,37 @@ import java.util.List;
 
 public class NoteHelper {
     @FindBy(id = "inputUsername")
-    private WebElement username;
+    private WebElement inputUsername;
 
     @FindBy(id = "inputPassword")
-    private WebElement password;
+    private WebElement inputPassword;
 
     @FindBy(id = "inputSubmit")
-    private WebElement submit;
+    private WebElement inputSubmit;
+
+    @FindBy(id = "nav-notes-tab")
+    private WebElement noteTab;
+
+    @FindBy(id = "addNoteBtn")
+    private WebElement addNoteBtn;
+
+    @FindBy(id = "note-title")
+    private WebElement inputNoteTitle;
+
+    @FindBy(id = "note-description")
+    private WebElement inputNoteDesc;
+
+    @FindBy(id = "save-note")
+    private WebElement saveNoteBtn;
+
+    @FindBy(id = "edit-note")
+    private WebElement editNoteBtn;
+
+    @FindBy(id = "delete-note")
+    private WebElement deleteNoteBtn;
 
     private LoginHelper loginHelper;
-    private WebDriver driver;
+    private final WebDriver driver;
     private User user;
 
     public NoteHelper(WebDriver driver){
@@ -30,57 +52,37 @@ public class NoteHelper {
         user = new User("admin@storage.com", "admin1234");
     }
     public void login(){
-        //Login
-        username.sendKeys(user.getUsername());
-        password.sendKeys(user.getPassword());
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getUsername() + "';", inputUsername);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getPassword() + "';", inputPassword);
 
-        submit.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", inputSubmit);
     }
     public void addNote(){
-        WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
-        noteTab.click(); //Go To Note Tab
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", noteTab);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addNoteBtn);
 
-        WebElement addNoteBtn = driver.findElement(By.id("addNoteBtn"));
-        WebElement noteTitle = driver.findElement(By.id("note-title"));
-        WebElement noteDescription = driver.findElement(By.id("note-description"));
-        WebElement saveChangesBtn = driver.findElement(By.id("save-note"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + "Insert Test Title" + "';", inputNoteTitle);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + "Insert Test Description" + "';", inputNoteDesc);
 
-
-
-        addNoteBtn.click();
-
-        noteTitle.sendKeys("Insert Test Title");
-        noteDescription.sendKeys("Insert Test Description");
-        saveChangesBtn.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveNoteBtn);
     }
 
     public void editFirstNote(String title, String desc){
-        WebElement noteTitle = driver.findElement(By.id("note-title"));
-        WebElement noteDescription = driver.findElement(By.id("note-description"));
-        WebElement saveChangesBtn = driver.findElement(By.id("save-note"));
-        WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
-        List<WebElement> editBtns = driver.findElements(By.id("edit-note"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", noteTab);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editNoteBtn);
 
-        noteTab.click();
-        editBtns.get(0).click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + title + "';", inputNoteTitle);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + desc + "';", inputNoteDesc);
 
-        //Clear Fields
-        noteTitle.clear();
-        noteDescription.clear();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveNoteBtn);
 
-        noteTitle.sendKeys(title);
-        noteDescription.sendKeys(desc);
-        saveChangesBtn.click();
     }
 
     public void deleteFirstNote(){
-        WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
-        List<WebElement> deleteBtns = driver.findElements(By.id("delete-note"));
-
-        noteTab.click();
-
-        deleteBtns.get(0).click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", noteTab);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteNoteBtn);
     }
+
     public String getFirstNoteTitle(){
         List<WebElement> titles = driver.findElements(By.id("in-note-title"));
         return titles.get(0).getAttribute("innerHTML");

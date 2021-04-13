@@ -4,6 +4,7 @@ import com.flashcloud.root.model.User;
 import com.flashcloud.root.services.UserService;
 import com.flashcloud.root.services.impl.UserServiceImp;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,23 +12,25 @@ import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
 public class SignupHelper {
 
     @FindBy(id = "inputFirstName")
-    private WebElement firstName;
+    private WebElement inputFirstName;
 
     @FindBy(id = "inputLastName")
-    private WebElement lastName;
+    private WebElement inputLastName;
 
     @FindBy(id = "inputUsername")
-    private WebElement username;
+    private WebElement inputUsername;
 
     @FindBy(id = "inputPassword")
-    private WebElement password;
+    private WebElement inputPassword;
 
     @FindBy(id = "inputSubmit")
-    private WebElement submit;
+    private WebElement inputSubmit;
+
+    @FindBy(id = "logout-btn")
+    private WebElement logout;
 
     private WebDriver driver;
 
@@ -40,26 +43,25 @@ public class SignupHelper {
     }
 
     public void signup(User user) {
-        firstName.sendKeys(user.getFirstName());
-        lastName.sendKeys(user.getLastName());
-        username.sendKeys(user.getUsername());
-        password.sendKeys(user.getPassword());
 
-        submit.click();
-    }
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getFirstName() + "';", inputFirstName);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getLastName() + "';", inputLastName);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getUsername() + "';", inputUsername);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getPassword() + "';", inputPassword);
 
-    public User getUser(String username){
-        return userService.getUser(username);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", inputSubmit);
+
     }
 
     public void login(User user) {
-        username.sendKeys(user.getUsername());
-        password.sendKeys(user.getPassword());
-        submit.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getUsername() + "';", inputUsername);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + user.getPassword() + "';", inputPassword);
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", inputSubmit);
+
     }
 
     public void logout(){
-        WebElement logoutBtn = driver.findElement(By.id("logout-btn"));
-        logoutBtn.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", logout);
     }
 }
