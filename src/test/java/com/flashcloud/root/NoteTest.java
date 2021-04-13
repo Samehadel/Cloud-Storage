@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+@TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NoteTest {
 
@@ -28,28 +30,36 @@ public class NoteTest {
         helper = new NoteHelper(driver);
     }
     @Test
-    public void testAddNote(){
+    @Order(1)
+    public void testAddNote() throws InterruptedException {
 
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
+        Thread.sleep(1000);
         int prevRows = helper.getNumberOfNotes();
+
         helper.addNote();
+
+        Thread.sleep(1000);
         int newRows = helper.getNumberOfNotes();
 
         Assertions.assertEquals(prevRows + 1, newRows);
     }
 
     @Test
-    public void testEditNote(){
+    @Order(2)
+    public void testEditNote() throws InterruptedException {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
-        String newTitle = "Test New Title";
-        String newDesc = "Test New Description";
+        String newTitle = "Edit Test New Title";
+        String newDesc = "Edit Test New Description";
 
+        Thread.sleep(1000);
         helper.editFirstNote(newTitle, newDesc);
 
+        Thread.sleep(1000);
         String updatedTitle = helper.getFirstNoteTitle();
         String updatedDesc = helper.getFirstNoteDesc();
 
@@ -58,12 +68,17 @@ public class NoteTest {
     }
 
     @Test
-    public void testDelete(){
+    @Order(3)
+    public void testDelete() throws InterruptedException {
         driver.get("http://localhost:" + this.port + "/login");
         helper.login(); //Login First
 
+        Thread.sleep(1000);
         int prevRows = helper.getNumberOfNotes();
+
         helper.deleteFirstNote();
+
+        Thread.sleep(1000);
         int newRows = helper.getNumberOfNotes();
 
         Assertions.assertEquals(prevRows - 1, newRows);

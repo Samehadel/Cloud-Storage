@@ -6,6 +6,7 @@ import com.flashcloud.root.model.Note;
 import com.flashcloud.root.services.CredentialService;
 import com.flashcloud.root.services.FileService;
 import com.flashcloud.root.services.NoteService;
+import com.flashcloud.root.utils.UserInputsChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,12 @@ public class HomeCredentialController {
         //Add The Credential
         int check = credentialService.addCredential(credential);
 
-        if(check == -2){
+        if(!UserInputsChecker.checkCredInputs(credential)){
+            model.addAttribute("hasError", true);
+            model.addAttribute("hasSuccess", false);
+            model.addAttribute("homeMessage", "Invalid Input");
+        }
+        else if(check == -2){
             model.addAttribute("hasError", false);
             model.addAttribute("hasSuccess", true);
             model.addAttribute("homeMessage", "Credential Updated Successfully");

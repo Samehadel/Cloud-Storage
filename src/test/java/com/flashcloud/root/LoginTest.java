@@ -44,9 +44,11 @@ class LoginTest {
 		assertEquals("Login", driver.getTitle());
 	}
 	@Test
-	public void testLogin(){
+	public void testLogin() throws InterruptedException {
 		driver.get("http://localhost:" + this.port + "/login");
 		helper.loginUser();
+
+		Thread.sleep(1000);//Wait
 
 		assertEquals("Home", driver.getTitle());
 	}

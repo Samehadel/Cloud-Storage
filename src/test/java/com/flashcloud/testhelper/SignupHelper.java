@@ -3,6 +3,7 @@ package com.flashcloud.testhelper;
 import com.flashcloud.root.model.User;
 import com.flashcloud.root.services.UserService;
 import com.flashcloud.root.services.impl.UserServiceImp;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,10 +29,13 @@ public class SignupHelper {
     @FindBy(id = "inputSubmit")
     private WebElement submit;
 
+    private WebDriver driver;
+
     private UserService userService;
 
     public SignupHelper(WebDriver driver, UserService userService) {
         PageFactory.initElements(driver, this);
+        this.driver = driver;
         this.userService = userService;
     }
 
@@ -52,5 +56,10 @@ public class SignupHelper {
         username.sendKeys(user.getUsername());
         password.sendKeys(user.getPassword());
         submit.click();
+    }
+
+    public void logout(){
+        WebElement logoutBtn = driver.findElement(By.id("logout-btn"));
+        logoutBtn.click();
     }
 }

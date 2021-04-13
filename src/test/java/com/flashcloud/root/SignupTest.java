@@ -29,34 +29,45 @@ public class SignupTest {
     private static User user;
 
     @BeforeAll
-    public static void init(){
+    public static void setup(){
         WebDriverManager.chromedriver().setup();
-        user = new User("Sameh", "Adel", "mail30@exmaple.com", "sameh1234");
+        user = new User("Admin", "Admin", "admin10@storage.com", "admin1234");
     }
 
     @BeforeEach
-    public void reInit(){
+    public void init(){
         this.driver = new ChromeDriver();
         helper = new SignupHelper(driver, userService);
     }
 
+    /*
+        Test The Signup Page Accessability
+     */
     @Test
-    public void getSignupPage() {
+    public void testSignupPageAccessability() {
         driver.get("http://localhost:" + this.port + "/signup");
         Assertions.assertEquals("Sign Up", driver.getTitle());
     }
 
+    /*
+     This test signs up a new user, logs that user in, verifies that they can access the home page,
+     then logs out and verifies that the home page is no longer accessible.
+     */
     @Test
-    public void testSignup(){
+    public void testUserLifeCycle() throws InterruptedException {
         driver.get("http://localhost:" + port + "/signup");
 
         helper.signup(user);
-        String location = driver.getTitle();
-        assertEquals("Login", location);
+        Thread.sleep(1000); //Wait
+        assertEquals("Login", driver.getTitle());
 
         helper.login(user);
-        location = driver.getTitle();
-        Assertions.assertEquals("Home", location);
+        Thread.sleep(1500); //Wait
+        Assertions.assertEquals("Home", driver.getTitle());
+
+        helper.logout();
+        Thread.sleep(1000);
+        Assertions.assertEquals("Login", driver.getTitle());
     }
 
     @Test
@@ -65,11 +76,11 @@ public class SignupTest {
         assertNotEquals(0, registeredUser.getUserId());
     }
 
-    /*
+
     @AfterEach
     public void afterEach() {
         if (this.driver != null) {
             driver.quit();
         }
-    }*/
+    }
 }

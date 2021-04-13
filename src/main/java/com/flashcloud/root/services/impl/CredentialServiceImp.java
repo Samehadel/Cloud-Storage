@@ -31,15 +31,15 @@ public class CredentialServiceImp implements CredentialService {
         int userId = getUserId(); //Get Logged User's ID
         credential.setUserId(userId);
 
-        Credential tempCredential = getCredential(credential.getCredentialId());
+        Credential persistedCredential = getCredential(credential.getCredentialId());
 
         //Edit Credential If It's Exist
-        if(tempCredential != null)
+        if(persistedCredential != null)
         {
             //Password Changed & Need Encryption
-            if(!tempCredential.getPassword().equals(credential.getPassword())){
-                String keyValue = tempCredential.getKeyValue();
-                String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), keyValue);
+            if(!persistedCredential.getPassword().equals(credential.getPassword())){
+                String keyValue = persistedCredential.getKeyValue();
+                String encryptedPassword = encryptionService.encryptValue(credential.getDisplayedPassword(), keyValue);
 
                 credential.setPassword(encryptedPassword); //Modify Credential Password
             }
@@ -50,7 +50,7 @@ public class CredentialServiceImp implements CredentialService {
 
         //First Time Creation
         String keyValue = encryptionService.generateSalt();
-        String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), keyValue);
+        String encryptedPassword = encryptionService.encryptValue(credential.getDisplayedPassword(), keyValue);
 
         credential.setKeyValue(keyValue);
 
@@ -76,7 +76,14 @@ public class CredentialServiceImp implements CredentialService {
 
         int userId = getUserId(); //Get Current User's ID
 
-        return credentialMapper.findAll(userId);
+        List<Credential> creds = credentialMapper.findAll(userId);
+
+        for(int i = 0; i < creds.size(); i++){
+            Credential c = creds.get(i);
+            c.setDisplayedPassword(encryptionService.decryptValue(c.getPassword(),
+                                                                  c.getKeyValue()));
+        }
+        return creds;
 
     }
 

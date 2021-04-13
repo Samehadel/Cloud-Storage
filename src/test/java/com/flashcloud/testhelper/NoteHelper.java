@@ -21,26 +21,36 @@ public class NoteHelper {
 
     private LoginHelper loginHelper;
     private WebDriver driver;
-
+    private User user;
 
     public NoteHelper(WebDriver driver){
         PageFactory.initElements(driver, this);
         loginHelper = new LoginHelper(driver);
         this.driver = driver;
+        user = new User("admin@storage.com", "admin1234");
     }
+    public void login(){
+        //Login
+        username.sendKeys(user.getUsername());
+        password.sendKeys(user.getPassword());
 
+        submit.click();
+    }
     public void addNote(){
+        WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
+        noteTab.click(); //Go To Note Tab
+
         WebElement addNoteBtn = driver.findElement(By.id("addNoteBtn"));
         WebElement noteTitle = driver.findElement(By.id("note-title"));
         WebElement noteDescription = driver.findElement(By.id("note-description"));
         WebElement saveChangesBtn = driver.findElement(By.id("save-note"));
-        WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
 
-        noteTab.click(); //Go To Note Tab
+
+
         addNoteBtn.click();
 
-        noteTitle.sendKeys("Test Title");
-        noteDescription.sendKeys("Test Description");
+        noteTitle.sendKeys("Insert Test Title");
+        noteDescription.sendKeys("Insert Test Description");
         saveChangesBtn.click();
     }
 
@@ -84,14 +94,5 @@ public class NoteHelper {
     public int getNumberOfNotes(){
         List<WebElement> rows = driver.findElements(By.id("notesId"));
         return rows.size();
-    }
-
-    public void login(){
-        User user = new User("admin@storage.com", "admin1234");
-
-        //Login
-        username.sendKeys(user.getUsername());
-        password.sendKeys(user.getPassword());
-        submit.click();
     }
 }

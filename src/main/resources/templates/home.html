@@ -12,7 +12,7 @@
 <div class="container">
     <div id="logoutDiv" >
         <form action="#" method="POST" th:action="@{/logout}">
-            <button type="submit" class="btn btn-secondary float-right">Logout</button>
+            <button id = "logout-btn" type="submit" class="btn btn-secondary float-right">Logout</button>
         </form>
     </div>
 
@@ -194,7 +194,7 @@
                                         th:credential-id="${cred.credentialId}"
                                         th:credential-url="${cred.url}"
                                         th:credential-username="${cred.username}"
-                                        th:credential-password="${cred.password}"
+                                        th:credential-password="${cred.displayedPassword}"
                                         id="edit-cred"
                                         type="button"
                                         class="btn btn-success"
@@ -243,7 +243,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Password</label>
-                                        <input th:field="*{password}" type="text" name="password" class="form-control"
+                                        <input th:field="*{displayedPassword}" type="text" name="password" class="form-control"
                                                id="credential-password" maxlength="25" required>
                                     </div>
                                     <button id="credentialSubmit" type="submit" class="d-none"></button>

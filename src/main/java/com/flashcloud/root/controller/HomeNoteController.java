@@ -7,6 +7,7 @@ import com.flashcloud.root.model.User;
 import com.flashcloud.root.services.CredentialService;
 import com.flashcloud.root.services.FileService;
 import com.flashcloud.root.services.NoteService;
+import com.flashcloud.root.utils.UserInputsChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +55,12 @@ public class HomeNoteController {
         //Add The Note
         int check = noteService.addNote(note);
 
-        if(check == -1){
+        if(!UserInputsChecker.checkNoteInputs(note)){
+            model.addAttribute("hasError", true);
+            model.addAttribute("hasSuccess", false);
+            model.addAttribute("homeMessage", "Invalid Input");
+        }
+        else if(check == -1){
             model.addAttribute("hasError", true);
             model.addAttribute("hasSuccess", false);
             model.addAttribute("homeMessage", "Note Already Exists! Try Another Shot");
